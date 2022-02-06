@@ -86,6 +86,21 @@ footer{
     font-size: 3em;
 }
 
-#expression {
+.sub-display {
     text-align: right;
+}
+
+.toggle-display {
+    display: none;
+}
+
+.flicker-display {
+    animation: forwards flicker;
+    animation-duration: 25ms;
+}
+
+@keyframes flicker {
+    to {
+        visibility: hidden;
+    }
 }
