@@ -83,15 +83,25 @@ footer{
 
 #solution {
     flex: 1;
-    font-size: 3em;
+    font-size: 2.9em;
+}
+
+#history {
+    white-space: nowrap;
+    overflow-x: scroll;
+}
+
+#history::-webkit-scrollbar{
+    height: 0.1em;
+    background: transparent;
+}
+
+#history::-webkit-scrollbar-thumb{
+    background: rgb(44, 56, 68);
 }
 
 .sub-display {
     text-align: right;
-}
-
-.toggle-display {
-    display: none;
 }
 
 .flicker-display {

@@ -2,11 +2,12 @@ const displaySolution = document.getElementById("solution");
 const displayExpression = document.getElementById("expression");
 const displayHistory = document.getElementById("history");
 const btnContainer = document.getElementById("btn-container");
+const btnArray = Array.from(btnContainer.children);
 
-let btnArray = Array.from(btnContainer.children);
 let input = '';
 let expArray = [];
 let expHistory = [];
+let fromEqual = false;
 
 btnContainer.addEventListener("click",btnClick);
 
@@ -43,7 +44,8 @@ function btnClick(e) {
             if(input == '0') return;
             break;       
     }
-    if(input.length <= inputSizeLimit()) {
+    if(expArray.length == 1 ) clear();
+    if(input.length < lengthLimit(input)) {
         input += btn.textContent;
         updateDisplay(input);
         updateExpDisplay(expArray);
@@ -51,14 +53,39 @@ function btnClick(e) {
 }
 
 function inputOperator(operator) {
-    if(input == '.' || input == '0') return;
-    if(input == '' && displaySolution.textContent.length > 0) {
+    if(input == '.' || input == '0' && expArray.length == 0) return;
+    if(fromEqual && input == '') {
         input = displaySolution.textContent;
-    } else if(expArray.length == 1) {
+    }
+
+    switch(operator) {
+        case '+':
+            if(input == '-' || input == '' && expArray.length != 1 || input =='+') {
+                input = '+';
+                updateDisplay(input);
+                return;
+            }
+            break;
+        
+        case '-':
+            if(input == '+' || input == '' && expArray.length != 1 || input == '-') {
+                input = '-';
+                updateDisplay(input);
+                return;
+            }
+            break;
+
+        case '*':
+        case '/':
+            if(input == '+' || input == '-' || input == '' && expArray.length != 1) return;
+            break;    
+    }
+    if(expArray.length == 1) {
         expArray.push(operator);
         expHistory.push(operator);
         updateExpDisplay(expArray);
         return;
+
     } else if(expArray.length == 2 && input != '') {
         expArray.push(input);
         expHistory.push(input);
@@ -72,34 +99,11 @@ function inputOperator(operator) {
         input = '';
         return;
     }
-    switch(operator) {
-        case '+':
-            if(input == '-' || input == '') {
-                input = '+';
-                updateDisplay(input);
-                return;
-            }
-            break;
-        
-        case '-':
-            if(input == '+' || input == '') {
-                input = '-';
-                updateDisplay(input);
-                return;
-            }
-            break;
-
-        case '*':
-            if(input == '+' || input == '-' || input == '') return;
-            break;
-
-        case '/':
-            if(input == '+' || input == '-' || input == '') return;
-            break;    
-    }
+    
     expArray.push(input,operator);
     expHistory.push(input,operator)
     input = '';
+    fromEqual = false;
     updateExpDisplay(expArray);
     updateHistoryDisplay(expHistory);
 }
@@ -117,10 +121,8 @@ function updateExpDisplay(array) {
 
 function updateHistoryDisplay(array) {
     if(expHistory.length >= 5) {
-        displayHistory.classList.remove('toggle-display');
         displayHistory.textContent = array.join(' ');
     } else {
-        displayHistory.classList.add('toggle-display');
         displayHistory.textContent = '';
     }
 }
@@ -150,6 +152,7 @@ function clear() {
 
 function equal() {
     if(input.length == 0) return;
+    fromEqual = true;
     expArray.push(input,'=');
     updateExpDisplay(expArray);
     expHistory.push(input,'=');
@@ -185,19 +188,47 @@ function operate(array) {
             }
             result = term1 / term2;
             break;
+        default:
+            return array[0];
 
     }
-    return String(result);
+
+    return adjust(result);
+}
+
+function adjust(num) {
+    let tempString = String(num);
+    if(tempString.length <= lengthLimit(tempString)) {
+        return tempString;
+    }
+    if(tempString.includes('.')) {
+        let round = 10 ** (lengthLimit(tempString) - 1 - tempString.indexOf('.'));
+        let roundedOff = String(Math.round(num * (10 ** round)) / round);
+        if(roundedOff.length > lengthLimit(tempString)) errorResultTooLarge(tempString);
+        return roundedOff;
+    }
+    errorResultTooLarge(tempString);
 }
 
 function errorDivideByZero() {
     alert("Error: Dividing by Zero");
-    clear();
+    setTimeout(function() {
+        clear();
+    }, 50)
 }
 
-function inputSizeLimit() {
+function errorResultTooLarge(string) {
+    alert(`Error: Result Too Large:\n${string}`);
+    setTimeout(function() {
+        clear();
+    }, 50)
+}
+
+
+function lengthLimit(string) {
     let limit = 12;
-    if(input[0] == '+' || input[0] == '-') limit++;
+    if(string[0] == '+' || string[0] == '-') limit++;
+    if(string.includes('.')) limit++;
     return limit;
 }
 
