@@ -114,3 +114,12 @@ footer{
         visibility: hidden;
     }
 }
+
+@media (min-width: 30em) {
+
+#solution {
+    font-size: 2.5em;
+}
+
+
+}
