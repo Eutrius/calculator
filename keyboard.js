@@ -1,64 +1,65 @@
 document.addEventListener('keyup', linkKey);
 
 function linkKey(e) {
-    console.log(e.code);
-    switch(e.code) {
-        case "NumpadDivide":
+    console.log(e.key);
+    switch(e.key) {
+        case '/':
             btnArray[1].click();
             break;
         
-        case "NumpadMultiply":
+        case '*':
             btnArray[2].click();
             break;
 
-        case "NumpadSubtract":
+        case '-':
             btnArray[3].click();
             break;
         
-        case "Numpad7":
+        case '7':
             btnArray[4].click();
             break;
 
-        case "Numpad8":
+        case '8':
             btnArray[5].click();
             break;
 
-        case "Numpad9":
+        case '9':
             btnArray[6].click();
             break;
-        case "NumpadAdd":
+
+        case '+':
             btnArray[7].click();
             break;
         
-        case "Numpad4":
+        case '4':
             btnArray[8].click();
             break;
 
-        case "Numpad5":
+        case '5':
             btnArray[9].click();
             break;
         
-        case "Numpad6":
+        case '6':
             btnArray[10].click();
             break;
 
-        case "Numpad1":
+        case '1':
             btnArray[11].click();
             break;
 
-        case "Numpad2":
+        case '2':
             btnArray[12].click();
             break;
 
-        case "Numpad3":
+        case '3':
             btnArray[13].click();
             break;
         
-        case "NumpadDecimal":
+        case '.':
             btnArray[14].click();
             break;
 
-        case "Numpa0":
+        case '0':
             btnArray[15].click();
             break;
 
@@ -67,7 +68,7 @@ function linkKey(e) {
             break;
 
         case "Enter":
-        case "NumpadEnter":
+        case '=':
             btnArray[17].click();
     
     }

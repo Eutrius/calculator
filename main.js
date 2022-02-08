@@ -202,8 +202,8 @@ function adjust(num) {
         return tempString;
     }
     if(tempString.includes('.')) {
-        let round = 10 ** (lengthLimit(tempString) - 1 - tempString.indexOf('.'));
-        let roundedOff = String(Math.round(num * (10 ** round)) / round);
+        let round = lengthLimit(tempString) - 1 - tempString.indexOf('.');
+        let roundedOff = String(Math.round(num * (10 ** round)) / 10 ** round);
         if(roundedOff.length > lengthLimit(tempString)) errorResultTooLarge(tempString);
         return roundedOff;
     }
