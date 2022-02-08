@@ -115,10 +115,10 @@ footer{
     }
 }
 
-@media only screen and (max-device-width: 20em) {
+@media only screen and (max-device-width: 31em) {
 
 #solution {
-    font-size: 1em;
+    font-size: 1.5em;
 }
 
 
